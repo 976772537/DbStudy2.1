@@ -1,0 +1,14 @@
+.navbar-inverse{
+    background: #1a2d22;
+}
+
+a{
+    color: #007b43;
+}
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    color: white;
+    background-color: #00a381;
+}

@@ -29,7 +29,6 @@
     <hr>
     <br>
 
-    <%------------------------正文-----------------%>
     <div class="col-sm-8 col-sm-offset-2">
         <div class="col-sm-8">
             <form class="form-inline" action="<c:url value="/TestServlet?method=getTestByTime"></c:url> " method="post">
@@ -51,6 +50,7 @@
                 <th>分数</th>
                 <th>创建时间</th>
                 <th>详细信息</th>
+                <th>题目变更</th>
             </tr>
             </thead>
             <c:forEach var="test" items="${testList}" varStatus="loop">
@@ -64,6 +64,9 @@
                                 data-target="#myModal${loop.count-1}">查看详细信息
                         </button>
                     </td>
+                    <td><form action="<c:url value="/TestServlet?method=deleteTest&sid=${test.sid}"/> ">
+                        <input type="submit" class="btn btn-primary" value="&nbsp;删除&nbsp;">
+                    </form> </td>
                 </tr>
                 <div class="modal  fade" id="myModal${loop.count-1}" style="margin-top: 250px" abindex="-1"
                      role="dialog"

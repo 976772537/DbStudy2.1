@@ -16,4 +16,6 @@ public interface TestDao {
     public List<Test> findTestByUid(String uid) throws SQLException;
     public List<Test> findTestByUidWithTime(String uid,String time) throws SQLException;
     public void updateHotSportBySid(int hotsport, String sid) throws SQLException ;
+
+    public void deleteTestBySid(String sid)throws SQLException;
 }

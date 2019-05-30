@@ -68,7 +68,16 @@ public class TestService {
             test.insertTest (t);
         } catch (SQLException e) {
             e.printStackTrace ();
-            throw new insertTestFailedException ();
+            throw new insertTestFailedException ("添加失败");
+        }
+    }
+
+    public void deleteTestBySid(String sid)throws FindTestFailedException{
+        try {
+            test.deleteTestBySid(sid);
+        } catch (SQLException e) {
+            e.printStackTrace ();
+            throw new FindTestFailedException ("没有找到要删除的题目");
         }
     }
 }

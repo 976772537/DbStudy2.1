@@ -35,9 +35,6 @@
                     }
                 }
             });
-            <c:if test="${!empty success}">
-                alert("${success}");
-            </c:if>
         }
     </script>
 </head>
@@ -53,6 +50,11 @@
 <c:if test="${!empty success}">
     <script>
         alert("${success}");
+    </script>
+</c:if>
+<c:if test="${!empty error}">
+    <script>
+        alert("${error}");
     </script>
 </c:if>
 <form action="<c:url value="/TestServlet?method=addTest"/> " method="post">

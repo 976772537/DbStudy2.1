@@ -48,11 +48,11 @@
                         <img src="<c:url value="/img/background/background_1.jpg"/> " alt="缩略图-1">
                     </c:if>
                     <c:if test="${!empty essay.essayImgPath && essay.filetype eq 'img'}">
-                        <img id="img" src="<c:url value="/img/essay/${essay.essayImgPath.get(0)}"/> "
+                        <img id="img${loop.count}" src="<c:url value="/img/essay/${essay.essayImgPath.get(0)}"/> "
                              alt="缩略图-1">
                         <script>
-                            if ($("#img").height() > 180) {
-                                $("#img").css({height: "180px"});
+                            if ($("#img${loop.count}").height() > 180) {
+                                $("#img${loop.count}").css({height: "180px"});
                             }
                         </script>
                     </c:if>

@@ -58,4 +58,10 @@ public class TestDaoImp implements TestDao{
         String sql = "update test set hotspot = ? where sid = ?";
         qr.update (sql, hotsport, sid);
     }
+
+    @Override
+    public void deleteTestBySid(String sid) throws SQLException {
+        String sql="delete from test where sid =?";
+        qr.update (sql,sid);
+    }
 }

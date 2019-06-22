@@ -150,7 +150,7 @@ req.setAttribute ("score", score);//返回分数到前端
 return "f:/main_jsp/test.jsp";
 ```
 得到对应的分数后，点击加入错题本按钮，会利用ajax将对应题目的id传递至后台，并插入数据与对应的用户关联，实现加入错题本的功能，同时题目的热度上升一人。若再次点击加入错题本按钮会在上方弹窗提示错题已在错题本中。在界面的上端开始考试字样会变换成对应的分数值。
-```java
+```javascript
 function addWrongBook(sid) {//此处的sid为对应题号的id号
     $.ajax({url: "TestServlet",type: "post", dataType: "json",
         data: { "method": "ajaxAddWrongBook", "sid": sid }，

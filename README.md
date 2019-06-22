@@ -9,7 +9,7 @@
 
 ### 登录功能
 在未登录时进入主界面，可以看到登录的按钮，使用其他功能会有尚未登录的提醒，点击登录按钮进入登录界面，输入用户名，密码和验证码，会在后台调用MySql数据库，查询用户名与密码是否存在，若存在登录成功，若不存在返回错误信息到前端，显示用户不存在，若登陆成功，检测是否勾选记住密码选项，若勾选记住密码，则将用户名与密码存入浏览器的Cookie中，生命周期为一周。之后自动跳转至首页面，界面发生改变，同时登录与注册选项消失，被首页的功能取代，下方为登陆功能
-```
+```java
 if(!verifyCode.equalsIgnoreCase((String)(session.getAttribute 		("verifyCodeForLogin")))) {
      req.setAttribute ("verif_error", "验证码错误"); //将错误信息存储入request域中
      return "f:/main_jsp/login.jsp"; //验证失败后返回登录界面
@@ -30,7 +30,7 @@ if(!verifyCode.equalsIgnoreCase((String)(session.getAttribute 		("verifyCodeForL
 
 ### 注册功能
 在未登录时，可以在主界面上看到注册的选项，也可以在登录界面选择注册的功能，点击即可进入注册界面，在注册界面会显示要求注册的信息，与验证码验证，注册界面前端使用正则表达式来验证用户输入的信息是否合法，若不合法则给予提示，同时在用户名栏处提供检测重复用户名的功能，点击检测重复按钮，利用ajax技术对界面进行局部刷新，调用后台在数据库中查找重复用户名，若无重复显示打√否则×。点击注册按钮，传递用户输入的数据至后台，检索是否重复，并返回结果，注册成功跳转至注册成功界面，并在5秒后自动跳转至主界面，若失败提示相应的错误信息。
-```
+```java
 User user = BeanUtils.toBean (req.getParameterMap (), User.class);//从前端取出信息
 if (!verifyCode.equalsIgnoreCase (vf)) {//判断验证码是否匹配
     req.setAttribute ("verif_error", "验证码错误");
@@ -56,7 +56,7 @@ return "f:/main_jsp/regist_success.jsp";//跳转至成功界面
 
 ### 验证码功能
 利用java中的Graphics2D对象绘制验证码，并且将生成的验证码以字节流传递至前端界面，并显示，同时返回验证码上的字符至后台，当用户提交后将用户输入的数据与后台数据进行比较，不区分大小写相同验证通过，不相同显示验证码错误。
-```
+```java
 public BufferedImage getImage(int num) {
     BufferedImage image = createImage(); //通过G2D绘制一张有背景色的图像
     Graphics2D g2 = (Graphics2D) image.getGraphics();//获取G2D画笔
@@ -69,7 +69,7 @@ public BufferedImage getImage(int num) {
 ```
 ### 个人主页
 当用户登录成功后才会在前端显示的功能，用户可以通过该功能实现查看并修改自己的信息，同时还可以查看自己在本站的错题本，在修改信息时利用正则进行检测，不合格进行提示，点击修改，传递至后台检索并返回提示。同时用户还可以更换自己的头像，可以为默认头像或用户自己上传的头像，点击上传头像间数据上传至客户端，在客户端对上传文件进行验证，例如：文件大小，文件后缀等信息进行审核，审核通过将头像数据通过io流输出至本地服务器，并将文件路径存入总图库，并将对应的图片id与对应的用户id关联，即多对一的关系，一个用户只能有一个头像，但是一个头像可以被多个用户使用。
-```
+```java
     try {
         getPartAndNameAndType (req); //通过request获取用户上传的头像数据
         if (!verifyFile (req, resp, path, p, fileType)) return;//验证文件是否可用
@@ -99,7 +99,7 @@ updateUserHeadByImgStoreAndUserImgStore (req, resp, user);
 
 ### 每日一练
 本功能在主界面可以看到，未登录时也可以进入，但是会被提示目前尚未登录，但可以关闭窗口，不会强制跳转，在本界面会显示具体的题库，目前用的自动化生成的测试题库进行检测，同时还会有精华榜，可以显示当前热度前五习题的信息，点击可以展开来查看具体的信息。同时实现分页，同时可以在多种题库中自由跳转。
-```
+```java
 int num = Integer.parseInt (req.getParameter ("cp_stl"));//获取页数取出为字符串需要转化为整型
 //如果传递的数据大于0并且小于总页数说明是当前页
 if (num > 0 &&  num <=page.getTotalPage ()) {
@@ -113,7 +113,7 @@ try {
 }
 ```
 以上源码为分页的核心流程部分，至此已经能够取出正确的数据返回之前端显示，在前端需要注意，因为只有登录后的用户才能够进入做题故应当通过javaScript判断并处理用户未登录便进入的情况。
-```
+```javascript
 	<c:if test="${empty user}">
    		 <script>
         			$("#myModal").modal('show')
@@ -130,7 +130,7 @@ try {
 
 ### 习题页
 在每日一练中选择任意题库，即可进入与其对应的习题页，进入时若用户未登录，会被过滤器拦截并强制跳转到登录界面，若登陆会在后台对应的题库中随机提取十道题，并显示到前端，在本界面上端会显示开始考试的提醒，用户选择选项并点击提交，在后台验卷，并返回分数，同时正确的题目会变成绿色，错误的题目会变成红色，习题的右边出现查看正确答案的按钮，点击查看弹窗显示题目详情，并提供加入错题本与关闭按钮。以下是如何判断测试题的源码：
-```
+```java
 int score = 0; //初始化分数为0
 int i = 0;//设置标记为0，因为用户传递来的题目列表最后使用从0开始的数据标记的
 for (Test st : list) { //遍历用户做完后的题目
@@ -150,7 +150,7 @@ req.setAttribute ("score", score);//返回分数到前端
 return "f:/main_jsp/test.jsp";
 ```
 得到对应的分数后，点击加入错题本按钮，会利用ajax将对应题目的id传递至后台，并插入数据与对应的用户关联，实现加入错题本的功能，同时题目的热度上升一人。若再次点击加入错题本按钮会在上方弹窗提示错题已在错题本中。在界面的上端开始考试字样会变换成对应的分数值。
-```
+```java
 function addWrongBook(sid) {//此处的sid为对应题号的id号
     $.ajax({url: "TestServlet",type: "post", dataType: "json",
         data: { "method": "ajaxAddWrongBook", "sid": sid }，
@@ -178,7 +178,7 @@ function addWrongBook(sid) {//此处的sid为对应题号的id号
 ### 错题本
 在个人主页可以查看错题本，如果用户添加过错题，那么进入本页面就可以看到所有添加过的错题，并且可以在对应题目的右边看到查看详情的选项，点击即可查看详细信息，在错题本的上方可以按日期进行查询对应日期的错题，若当天没有错题则不会显示错题，否则显示相应的错题，并按照时间排序。这一部分主要是一些数据库sql的操作，通过like关键字对日期进行模糊查询，例如：”select * from wrongbook where uid = ？ and time like ‘%”+datatime+”%’”;
  如果能够查询得到数据，便将数据取出并存储到数组或链表中返回至前端。至如何于添加题目至错题本刚才上方已经给出了如何通过ajax将数据发送至前端，下面会对后台的接收与处理进行分析。
-```
+```java
 new WrongBookService (Drputils.getProperties () //将用户名与题目id存入错题本
         .getProperty ("WrongBook")).addWrongBookByUid (sid, uid);
 ts.updateTestHotSpot (sid); //更新题目热度
@@ -226,7 +226,7 @@ resp.getWriter ().println (true); //返回前端ajax 通知弹窗
 教师账户可通过点击资料中心的文章发表功能进入投稿界面，并选择希望上传的文件的类型。本模块，在设计时我对文章投稿（WriteEssayServlet）的文件大小（fileSize），文件转到的页面（filePage），文件类型（type）,文件存储路径（filePath）进行抽离，分别给予这色属性set方法以方便其他方法继承。这样只需要专注于上传文件的构建即可，具体的属性赋值可以通过读取properties文件的对应的key值决定即可。
 从上图的properties文件中可以看出各个文件的允许上传的大小，格式与文件的存储路径和上传成功之后的跳转路径。然后只需要实现文件上传的功能，文件上传功能已在前面介绍过，下面会分析一下如何解析各个数据的过程。
 
-```
+```java
 public void setUpFileType() {
     this.fileType = "ImgFileType"; //通过传入需要调用key值来获取对应的文件类型
 }
@@ -262,7 +262,7 @@ if (!verifyImg (imgPart, fileType, Long.parseLong (Drputils.getProperties ().get
 ### 文章管理
 管理员在此对用户发布的文章信息管理或封禁。可以通过上方的搜索栏对特定文章内容或标题进行关键字搜索。本模块是上面多种模块核心部分的综合，本模块的实现类继承与文章搜索类，同时该类新增了两种ajax方法：ajaxSetEssayActive（文章状态设置），ajaxDelEssay（删除文章）。
 通过这两种方法实现管理员对文章的删除与封禁。
-```
+```java
 public void ajaxSetEssayActive(HttpServletRequest req, HttpServletResponse resp) {
     String essayid = req.getParameter ("essayid");
     try {if (essayid.contains ("c")) {//essayid都是大写字母若其中有标记得小c说明是要封禁的
